@@ -48,4 +48,8 @@ interface HTTPInterface {
     //Get media
     @GET("media/{id}")
     suspend fun getPostImgCover(@Path("id") id: Int?) : JSONMedia
+
+    @GET("posts")
+    suspend fun searchForPost(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("search") search: String?) : ArrayList<JSONPost>
+
 }

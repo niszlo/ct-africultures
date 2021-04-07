@@ -13,16 +13,20 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".activities.IntentActivity"
-                  android:theme="@style/Theme.Invisible"
-                  android:excludeFromRecents="true"
-                  android:noHistory="true"
-                  >
+        <activity
+                android:name=".activities.SearchActivity"
+                android:windowSoftInputMode="stateAlwaysVisible"
+                android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity
+                android:name=".activities.IntentActivity"
+                android:excludeFromRecents="true"
+                android:noHistory="true"
+                android:theme="@style/Theme.Invisible">
             <intent-filter>
                 <data
                         android:host="www.contretemps.eu"
                         android:scheme="http"/>
-
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -42,7 +46,6 @@
         <activity
                 android:name=".activities.PostActivity"
                 android:configChanges="orientation|screenSize|keyboardHidden">
-
         </activity>
         <activity
                 android:name=".activities.MainActivity"

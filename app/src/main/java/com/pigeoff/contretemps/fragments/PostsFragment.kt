@@ -18,7 +18,11 @@ import com.pigeoff.contretemps.util.Util
 import kotlinx.coroutines.*
 import java.lang.Runnable
 
-class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
+class PostsFragment(
+    private var type: Int,
+    private var num: Int,
+    private var feature: Boolean,
+    private var search: String?) : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var httpClient: HTTPClient
@@ -26,6 +30,7 @@ class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
 
     var allPosts = arrayListOf<JSONPost>()
     var mDataLoaded: OnDatasLoaded? = null
+    var isOkToLoad = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return View.inflate(context, R.layout.fragment_posts, null)
@@ -41,18 +46,18 @@ class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
 
         //Init RecyclerView (without nothing inside...)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = PostAdapter(context!!, recyclerView, httpClient, arrayListOf())
+        recyclerView.adapter = PostAdapter(context!!, arrayListOf(), feature)
 
 
         //
         CoroutineScope(Dispatchers.IO).launch {
-            addTenArticles()
+            addTenArticles(search)
         }
 
         swiperefresh.setOnRefreshListener {
             Log.i("INFO", "Refreshing view")
             CoroutineScope(Dispatchers.IO).launch {
-                update(recyclerView)
+                update(recyclerView, search)
             }
         }
 
@@ -78,7 +83,7 @@ class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == adapter.itemCount - 1) { //bottom of list!
                         CoroutineScope(Dispatchers.Main).launch {
                             Log.i("Bttm recycler reached", "YES")
-                            addTenArticles()
+                            addTenArticles(search)
                         }
                     }
                 }
@@ -94,7 +99,7 @@ class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
         this.mDataLoaded = listener
     }
 
-    suspend fun addTenArticles() {
+    suspend fun addTenArticles(search: String?) {
         //On affiche la barre de progression
         withContext(Dispatchers.Main) {
             mDataLoaded?.onOnDatasLoadedListener(true)
@@ -103,36 +108,67 @@ class PostsFragment(private var type: Int, private var num: Int) : Fragment() {
         //On récupère l'adapter
         val adapter = recyclerView.adapter as PostAdapter
 
-        //On récupère les articles
-        try {
-            val newPosts = httpClient.posts(adapter.page, type, num)
-            allPosts.addAll(newPosts)
+        if (isOkToLoad) {
+            //On récupère les articles
+            try {
+                var newPosts = arrayListOf<JSONPost>()
+                if (search.isNullOrEmpty()) {
+                    val listPosts = httpClient.posts(adapter.page, type, num)
+                    newPosts.addAll(listPosts)
+                }
+                else {
+                    val listPosts = httpClient.searchForPost(adapter.page, search)
+                    newPosts.addAll(listPosts)
+                }
 
-            if (newPosts.count() != 0) {
-                //On ajoute une page SEULEMENT si on a eu des résultats
-                //Sinon ça veut dire soit qu'on a pas réussi à choper des articles
-                //soit qu'on a
-                adapter.page++
-                Log.i("Pages", adapter.page.toString())
+                allPosts.addAll(newPosts)
+
+                if (adapter.getPosts().count() == 0) {
+                    //On applique cette conditions pour toujours afficher les 10 premiers résultats
+                    adapter.page++
+                    Log.i("Pages", adapter.page.toString())
+                }
+                else {
+                    //Cette condition permet de ne pas charger éternellement les derniers résultats
+                    if (newPosts.last() != adapter.getPosts().last()) {
+                        //On ajoute une page SEULEMENT si on a eu des résultats
+                        //Sinon ça veut dire soit qu'on a pas réussi à choper des articles
+                        //soit qu'on a
+                        adapter.page++
+                        Log.i("Pages", adapter.page.toString())
+                    }
+                }
+
+                //On arrete le chargement des pages si on arrive à moins de 10 posts
+                if (newPosts.count() < 10) {
+                    isOkToLoad = false
+                }
+
+                withContext(Dispatchers.Main) {
+                    adapter.insertItems(newPosts)
+                    mDataLoaded?.onOnDatasLoadedListener(false)
+                    if (swiperefresh.isRefreshing) swiperefresh.isRefreshing = false
+                    adapter.isLoading = false
+                }
             }
-
-            withContext(Dispatchers.Main) {
-                adapter.insertItems(newPosts)
-                mDataLoaded?.onOnDatasLoadedListener(false)
-                if (swiperefresh.isRefreshing) swiperefresh.isRefreshing = false
-                adapter.isLoading = false
+            catch (e: Exception) {
+                Log.e("ERROR", "Error Occurred: ${e.message}")
+                if (e.message == "HTTP 400 Bad Request") {
+                    //On arrête le comptage si on arrive à une erreur 400
+                    isOkToLoad = false
+                }
+                withContext(Dispatchers.Main) {
+                    mDataLoaded?.onOnDatasLoadedListener(false)
+                    Util.alertError(requireView(), true)
+                }
             }
         }
-        catch (e: Exception) {
-            Log.e("ERROR", "Error Occurred: ${e.message}")
-            withContext(Dispatchers.Main) {
-                mDataLoaded?.onOnDatasLoadedListener(false)
-                Util.alertError(requireView(), true)
-            }
+        else {
+            mDataLoaded?.onOnDatasLoadedListener(false)
         }
     }
 
-    suspend fun update(recyclerView: RecyclerView) {
+    suspend fun update(recyclerView: RecyclerView, search: String?) {
         Log.i("INFO", "Chargement page")
         val adapter = recyclerView.adapter as PostAdapter
         val newPosts = ArrayList<JSONPost>()

@@ -1,8 +1,10 @@
 package com.pigeoff.contretemps.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
@@ -165,7 +167,7 @@ class MainActivity : AppCompatActivity() {
     fun updateFragment(type: Int, id: Int) {
         currentCategory = id
         progressBar.visibility = View.VISIBLE
-        val fragment = PostsFragment(type, id)
+        val fragment = PostsFragment(type, id, true,null)
 
         supportFragmentManager
             .beginTransaction()
@@ -186,10 +188,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(Gravity.START)
+            }
+            R.id.menu_main_search -> {
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
             }
         }
         return true

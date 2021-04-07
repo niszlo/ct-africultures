@@ -20,9 +20,11 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_post.view.*
 import kotlinx.coroutines.*
 
-class PostAdapter(private val context: Context, private var recyclerview: RecyclerView, private val http: HTTPClient, private var posts: ArrayList<JSONPost>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostAdapter(private val context: Context,
+                  private var posts: ArrayList<JSONPost>,
+                  private var feature: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var client = (context?.applicationContext as CTApp).getHTTPClient()
+    var client = (context.applicationContext as CTApp).getHTTPClient()
     var page = 1
     var isLoading = false
     val loadedImg = HashMap<Int, String>()
@@ -46,16 +48,20 @@ class PostAdapter(private val context: Context, private var recyclerview: Recycl
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
-            VIEW_FEATURED
-        } else {
-            val reste = position % 5
-            if (reste == 0) {
-                VIEW_FEATURED
-            } else {
-                VIEW_NORMAL
-            }
-        }
+        return if (feature) {
+                    if (position == 0) {
+                        VIEW_FEATURED
+                    } else {
+                        val reste = position % 5
+                        if (reste == 0) {
+                            VIEW_FEATURED
+                        } else {
+                            VIEW_NORMAL
+                        }
+                    }
+                } else {
+                    VIEW_NORMAL
+                }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -97,7 +103,7 @@ class PostAdapter(private val context: Context, private var recyclerview: Recycl
         for (i in items) {
             posts.add(i)
         }
-        notifyItemRangeInserted(lastOldElement, 10)
+        notifyItemRangeInserted(lastOldElement, items.count())
     }
 
     fun updateImg(client: HTTPClient, position: Int, view: ImageView, post: JSONPost) {
@@ -136,5 +142,9 @@ class PostAdapter(private val context: Context, private var recyclerview: Recycl
         Log.i("INFO", "Last element id ${posts.count()}")
         notifyDataSetChanged()
         notifyItemRangeChanged(0, itemCount)
+    }
+
+    fun getPosts() : ArrayList<JSONPost> {
+        return posts
     }
 }

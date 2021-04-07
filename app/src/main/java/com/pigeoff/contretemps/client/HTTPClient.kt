@@ -1,10 +1,11 @@
 package com.pigeoff.contretemps.client
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.util.Log
+import com.pigeoff.contretemps.util.ListJSONPost
 import com.pigeoff.contretemps.util.Util
-import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -43,6 +44,16 @@ class HTTPClient {
                 posts.addAll(service.getPostsByCategory(10, page))
             }
         }
+        return if (posts.isNullOrEmpty()) {
+            arrayListOf()
+        } else {
+            posts
+        }
+    }
+
+    suspend fun searchForPost(page: Int, search: String) : ArrayList<JSONPost> {
+        val posts = service.searchForPost(10, page, search)
+
         return if (posts.isNullOrEmpty()) {
             arrayListOf()
         } else {
