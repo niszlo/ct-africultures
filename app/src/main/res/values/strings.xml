@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Contretemps</string>
+    <string name="app_description">Revue de critique communiste</string>
+    <string name="nav_t_catageories">Catégories</string>
+    <string name="nav_home">Accueil</string>
+    <string name="nav_conjoncture">Conjoncture</string>
+    <string name="nav_theorie">Théorie</string>
+    <string name="nav_strategie">Stratégie</string>
+    <string name="nav_culture">Culture</string>
+    <string name="nav_histoire">Histoire</string>
+    <string name="nav_recits">Récits</string>
+    <string name="nav_enquete">Enquête</string>
+    <string name="nav_dossier">Dossiers</string>
+    <string name="nav_fav">Favoris</string>
+    <string name="nav_info">À propos</string>
+    <string name="menu_fav">Ajouter aux favoris</string>
+    <string name="menu_browser">Ouvrir dans le navigateur</string>
+    <string name="menu_share">Partager</string>
+    <string name="menu_refresh">Rafraîchir la page</string>
+    <string name="error">Une erreur s\'est produite.</string>
+    <string name="error_internet">Une erreur s\'est produite. Vérifiez votre connexion internet.</string>
+</resources>

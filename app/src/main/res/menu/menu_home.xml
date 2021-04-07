@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+            android:id="@+id/group"
+            android:checkableBehavior="single">
+                <item android:checked="true" android:id="@+id/itemHome" android:title="@string/nav_home" android:icon="@drawable/ic_home" />
+                <item android:id="@+id/itemDossiers" android:title="@string/nav_dossier" android:icon="@drawable/ic_dossier"/>
+                <item android:id="@+id/itemConjoncture" android:title="@string/nav_conjoncture" android:icon="@drawable/ic_conjoncture"/>
+                <item android:id="@+id/itemTheorie" android:title="@string/nav_theorie" android:icon="@drawable/ic_theorie"/>
+                <item android:id="@+id/itemStrategie" android:title="@string/nav_strategie" android:icon="@drawable/ic_strategie"/>
+                <item android:id="@+id/itemCulture" android:title="@string/nav_culture" android:icon="@drawable/ic_culture"/>
+                <item android:id="@+id/itemHistoire" android:title="@string/nav_histoire" android:icon="@drawable/ic_histoire"/>
+                <item android:id="@+id/itemRecits" android:title="@string/nav_recits" android:icon="@drawable/ic_recits"/>
+                <item android:id="@+id/itemEnquete" android:title="@string/nav_enquete" android:icon="@drawable/ic_enquetes"/>
+    </group>
+    <group
+            android:id="@+id/group2">
+        <item android:id="@+id/itemFav" android:title="@string/nav_home" android:icon="@drawable/ic_star_on" />
+        <item android:id="@+id/itemInfo" android:title="@string/nav_conjoncture" android:icon="@drawable/ic_info"/>
+    </group>
+</menu>
