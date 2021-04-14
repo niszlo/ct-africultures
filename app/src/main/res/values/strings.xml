@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Contretemps</string>
     <string name="app_description">Revue de critique communiste</string>
+    <string name="activity_settings">Paramètres</string>
     <string name="nav_t_catageories">Catégories</string>
     <string name="nav_home">Accueil</string>
     <string name="nav_conjoncture">Conjoncture</string>
@@ -20,4 +21,14 @@
     <string name="menu_search">Rechercher</string>
     <string name="error">Une erreur s\'est produite.</string>
     <string name="error_internet">Une erreur s\'est produite. Vérifiez votre connexion internet.</string>
+    <string name="settings_title">Informations</string>
+    <string name="settings_ctwebsite_title">Contretemps.eu</string>
+    <string name="settings_ctwebsite_description">Cliquez ici pour accéder au site web de Contretemps</string>
+    <string name="settings_developer_title">Développer par @pigeoff</string>
+    <string name="settings_developer_description">Cliquez ici pour accéder au site web du développeur</string>
+    <string name="settings_libraries_title">Bibliothèques open source</string>
+    <string name="settings_libraries_description">Afficher les liences des bibliothèques utilisées pour concevoir cette application</string>
+    <string name="settings_item_libraries">Bibliothèques utilisées</string>
+    <string name="settings_licence_title">Licence</string>
+    <string name="settings_licence_description">Le contenu original publié par Contretemps est mis à disposition selon les termes de la licence Creative Commons « Attribution – Pas d’Utilisation Commerciale – Pas de Modification 3.0 France (CC BY-NC-ND 3.0 FR) ».</string>
 </resources>

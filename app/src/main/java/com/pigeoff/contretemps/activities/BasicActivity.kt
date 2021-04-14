@@ -1,4 +1,4 @@
-package com.pigeoff.contretemps
+package com.pigeoff.contretemps.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,13 +7,12 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import com.pigeoff.contretemps.CTApp
+import com.pigeoff.contretemps.R
 import com.pigeoff.contretemps.client.HTTPClient
 import com.pigeoff.contretemps.client.JSONSection
 import com.pigeoff.contretemps.fragments.PostsFragment
 import com.pigeoff.contretemps.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

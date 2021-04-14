@@ -1,11 +1,9 @@
 package com.pigeoff.contretemps.activities
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.pigeoff.contretemps.BasicActivity
 import com.pigeoff.contretemps.util.Util
 import java.net.URL
 

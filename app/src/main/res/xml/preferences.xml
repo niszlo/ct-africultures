@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+            app:title="@string/settings_title">
+        <Preference
+                app:title="@string/settings_ctwebsite_title"
+                app:summary="@string/settings_ctwebsite_description">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="http://www.contretemps.eu" />
+        </Preference>
+        <Preference
+                app:title="@string/settings_developer_title"
+                app:summary="@string/settings_developer_description">
+            <intent
+                    android:action="android.intent.action.VIEW"
+                    android:data="http://pigeoff.pw" />
+        </Preference>
+        <Preference
+                app:key="libraries"
+                app:title="@string/settings_libraries_title"
+                app:summary="@string/settings_libraries_description">
+        </Preference>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="@string/settings_licence_title"
+    >
+        <Preference
+                app:summary="@string/settings_licence_description"
+                app:selectable="false">
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

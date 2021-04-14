@@ -156,6 +156,10 @@ class MainActivity : AppCompatActivity() {
                     updateFragment(Util.FRAG_CATEGORY, categoriesId.get(8))
                     toolbar.title = it.title
                 }
+                R.id.itemInfo -> {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                }
             }
             it.isChecked = true
             drawerLayout.closeDrawer(Gravity.START)
