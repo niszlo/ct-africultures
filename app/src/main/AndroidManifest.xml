@@ -13,10 +13,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".BasicActivity">
+        </activity>
         <activity
                 android:name=".activities.SearchActivity"
-                android:windowSoftInputMode="stateAlwaysVisible"
-                android:configChanges="orientation|screenSize|keyboardHidden">
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:windowSoftInputMode="stateAlwaysVisible">
         </activity>
         <activity
                 android:name=".activities.IntentActivity"
@@ -27,6 +29,7 @@
                 <data
                         android:host="www.contretemps.eu"
                         android:scheme="http"/>
+
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.BROWSABLE"/>

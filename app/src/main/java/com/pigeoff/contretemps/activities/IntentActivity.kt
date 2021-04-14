@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.pigeoff.contretemps.BasicActivity
 import com.pigeoff.contretemps.util.Util
 import java.net.URL
 
@@ -60,19 +61,13 @@ class IntentActivity : AppCompatActivity() {
                 //Cas d'autre chose
                 when (path.first()) {
                     "category" -> {
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, BasicActivity::class.java)
                         intent.putExtra(Util.ACTION_TYPE, Util.INTENT_CATEGORY)
                         intent.putExtra(Util.ACTION_SLUG, path.last())
                         startActivity(intent)
                     }
-                    "author" -> {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(Util.ACTION_TYPE, Util.INTENT_AUTHOR)
-                        intent.putExtra(Util.ACTION_SLUG, path.last())
-                        startActivity(intent)
-                    }
                     "tag" -> {
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, BasicActivity::class.java)
                         intent.putExtra(Util.ACTION_TYPE, Util.INTENT_TAG)
                         intent.putExtra(Util.ACTION_SLUG, path.last())
                         startActivity(intent)
