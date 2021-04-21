@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Contretemps</string>
     <string name="app_description">Revue de critique communiste</string>
-    <string name="activity_settings">Paramètres</string>
+    <string name="activity_settings">À propos</string>
     <string name="nav_t_catageories">Catégories</string>
     <string name="nav_home">Accueil</string>
     <string name="nav_conjoncture">Conjoncture</string>
@@ -24,7 +24,7 @@
     <string name="settings_title">Informations</string>
     <string name="settings_ctwebsite_title">Contretemps.eu</string>
     <string name="settings_ctwebsite_description">Cliquez ici pour accéder au site web de Contretemps</string>
-    <string name="settings_developer_title">Développer par @pigeoff</string>
+    <string name="settings_developer_title">Développé par @pigeoff</string>
     <string name="settings_developer_description">Cliquez ici pour accéder au site web du développeur</string>
     <string name="settings_libraries_title">Bibliothèques open source</string>
     <string name="settings_libraries_description">Afficher les liences des bibliothèques utilisées pour concevoir cette application</string>

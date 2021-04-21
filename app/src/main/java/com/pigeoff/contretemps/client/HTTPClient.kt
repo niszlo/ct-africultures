@@ -3,6 +3,7 @@ package com.pigeoff.contretemps.client
 import android.util.Log
 import com.pigeoff.contretemps.util.ListJSONPost
 import com.pigeoff.contretemps.util.Util
+import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,7 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class HTTPClient {
 
     var service: HTTPInterface
-    val baseUrl = "http://www.contretemps.eu/wp-json/wp/v2/"
+    val baseUrl = "https://www.contretemps.eu/wp-json/wp/v2/"
+    val maxPagesConstante = 10
 
     init {
         val retrofit = Retrofit.Builder()
@@ -23,42 +25,66 @@ class HTTPClient {
         service = retrofit.create(HTTPInterface::class.java)
     }
 
-    suspend fun posts(page: Int, type: Int, id: Int) : ArrayList<JSONPost> {
-        var posts = arrayListOf<JSONPost>()
-        when (type) {
-            Util.FRAG_CATEGORY -> {
-                if (id == 0) {
-                    posts.addAll(service.getPostsByCategory(10, page))
+    suspend fun posts(page: Int, type: Int, id: Int, q: String?) {
+        var request: Call<ArrayList<JSONPost>>? = null
+
+        if (q.isNullOrEmpty()) {
+            when (type) {
+                Util.FRAG_CATEGORY -> {
+                    request = if (id == 0) {
+                        service.getPostsByCategory(maxPagesConstante, page)
+                    } else {
+                        service.getPostsByCategory(maxPagesConstante, page, id)
+                    }
                 }
-                else {
-                    posts.addAll(service.getPostsByCategory(10, page, id))
+                Util.FRAG_TAG -> {
+                    request = service.getPostsByTags(maxPagesConstante, page, id)
                 }
-            }
-            Util.FRAG_TAG -> {
-                posts.addAll(service.getPostsByTags(10, page, id))
-            }
-            Util.FRAG_AUHTOR -> {
-                posts.addAll(service.getPostsByAuthor(10, page, id))
-            }
-            else -> {
-                posts.addAll(service.getPostsByCategory(10, page))
+                Util.FRAG_AUHTOR -> {
+                    request = service.getPostsByAuthor(maxPagesConstante, page, id)
+                }
+                else -> {
+                    request = service.getPostsByCategory(maxPagesConstante, page)
+                }
             }
         }
-        return if (posts.isNullOrEmpty()) {
-            arrayListOf()
-        } else {
-            posts
+
+        else {
+            request = service.searchForPost(maxPagesConstante, page, q)
         }
+
+        request.enqueue(object : Callback<ArrayList<JSONPost>> {
+            override fun onResponse(call: Call<ArrayList<JSONPost>>, response: Response<ArrayList<JSONPost>>) {
+                val posts = response.body()
+                val maxPosts = response.headers().get("X-WP-Total")?.toInt()
+                val maxPages = response.headers().get("X-WP-TotalPages")?.toInt()
+
+                onPostsFetchedListener?.onPostsFetchedListener(posts, maxPosts, maxPages)
+            }
+
+            override fun onFailure(call: Call<ArrayList<JSONPost>>, t: Throwable) {
+                onPostsFetchedListener?.onPostsFetchedListener(null, null, null)
+            }
+        })
     }
 
-    suspend fun searchForPost(page: Int, search: String) : ArrayList<JSONPost> {
-        val posts = service.searchForPost(10, page, search)
 
-        return if (posts.isNullOrEmpty()) {
-            arrayListOf()
-        } else {
-            posts
-        }
+    suspend fun searchForPost(page: Int, search: String) {
+        val request = service.searchForPost(maxPagesConstante, page, search)
+
+        request.enqueue(object : Callback<ArrayList<JSONPost>> {
+            override fun onResponse(call: Call<ArrayList<JSONPost>>, response: Response<ArrayList<JSONPost>>) {
+                val posts = response.body()
+                val maxPosts = response.headers().get("X-WP-Total")?.toInt()
+                val maxPages = response.headers().get("X-WP-TotalPages")?.toInt()
+
+                onPostsFetchedListener?.onPostsFetchedListener(posts, maxPosts, maxPages)
+            }
+
+            override fun onFailure(call: Call<ArrayList<JSONPost>>, t: Throwable) {
+                onPostsFetchedListener?.onPostsFetchedListener(null, null, null)
+            }
+        })
     }
 
 
@@ -140,5 +166,27 @@ class HTTPClient {
         else {
             return null
         }
+    }
+
+    fun returnAuthorsFromPost(post: JSONPost) : ArrayList<String> {
+        val authors = arrayListOf<String>()
+        val doc = Jsoup.connect(post.link).get()
+        val elmts = doc.getElementsByAttributeValue("rel", "author")
+        for (e in elmts) {
+            authors.add(e.text())
+        }
+        return authors
+    }
+
+    //Interface onPostsFetchedListener
+
+    private var onPostsFetchedListener: OnPostsFetchedListener? = null
+
+    interface OnPostsFetchedListener {
+        fun onPostsFetchedListener(posts: ArrayList<JSONPost>?, maxPosts: Int?, maxPages: Int?)
+    }
+
+    fun setOnPostsFetchedListener(listener: OnPostsFetchedListener) {
+        this.onPostsFetchedListener = listener
     }
 }

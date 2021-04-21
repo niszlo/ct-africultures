@@ -51,5 +51,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
 }

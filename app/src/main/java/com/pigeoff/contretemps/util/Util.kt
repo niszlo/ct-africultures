@@ -54,11 +54,16 @@ class Util {
             return txt
         }
 
-        fun postToHTML(post: JSONPost) : String {
+        fun postToHTML(post: JSONPost, authors: ArrayList<String>) : String {
+            val authors = if (!authors.isNullOrEmpty()) {
+                " - par "+authors.joinToString(", ")+"</small><br/>"
+            } else {
+                "</small><br/>"
+            }
             val content = post.content.get("rendered")
-            val date = "<small style=\"color:#999\">Publié le ${Util.wpDateToString(post.date)}</small><br/>"
+            val date = "<small style=\"color:#999\">Publié le ${Util.wpDateToString(post.date)}"
             val title = "<h1 style=\"display:block;padding-top:0;margin-top:-1em;\">${post.title.get("rendered")}</h1>"
-            val html = htmlHead+title+date+content
+            val html = htmlHead+title+date+authors+content
             val encodedHtml = Base64.encodeToString(html.toByteArray(), Base64.NO_PADDING)
             return encodedHtml
         }

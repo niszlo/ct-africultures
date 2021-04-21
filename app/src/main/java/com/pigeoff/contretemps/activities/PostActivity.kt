@@ -27,6 +27,7 @@ class PostActivity : AppCompatActivity() {
     lateinit var swiperefresh: SwipeRefreshLayout
 
     var post = JSONPost()
+    var authors = arrayListOf<String>()
     val http = HTTPClient()
     var webViewClick = false
 
@@ -57,6 +58,12 @@ class PostActivity : AppCompatActivity() {
             if (intentId != 0) {
                 try {
                     post = http.getPostFromId(intentId)
+                    try {
+                        authors = http.returnAuthorsFromPost(post)
+                    }
+                    catch (e: Exception) {
+                        println(e)
+                    }
                 }
                 catch (e: Exception) {
                     Log.e("Error fetching post", e.message.toString())
@@ -75,7 +82,7 @@ class PostActivity : AppCompatActivity() {
 
             //Setting webview
             if (post.id != 0) {
-                updateWebView(post)
+                updateWebView(post, authors)
             }
             else {
                 problemLoadingPage(false)
@@ -121,7 +128,7 @@ class PostActivity : AppCompatActivity() {
 
         swiperefresh.setOnRefreshListener {
             CoroutineScope(Dispatchers.IO).launch {
-                updateWebView(post)
+                updateWebView(post, authors)
             }
         }
     }
@@ -157,16 +164,16 @@ class PostActivity : AppCompatActivity() {
             }
             R.id.menu_post_refresh -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    updateWebView(post)
+                    updateWebView(post, authors)
                 }
             }
         }
         return true
     }
 
-    suspend fun updateWebView(post: JSONPost) {
+    suspend fun updateWebView(post: JSONPost, authors: ArrayList<String>) {
         withContext(Dispatchers.Main) {
-            val encodedHtml = Util.postToHTML(post)
+            val encodedHtml = Util.postToHTML(post, authors)
             progressBar.visibility = View.VISIBLE
             webView.loadData(encodedHtml, "text/html; charset=utf-8", "base64")
             Log.i("POST title", post.title.toString())

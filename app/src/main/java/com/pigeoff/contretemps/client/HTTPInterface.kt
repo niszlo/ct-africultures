@@ -13,16 +13,20 @@ interface HTTPInterface {
 
     //Get liste de POSTS
     @GET("posts")
-    suspend fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?) : ArrayList<JSONPost>
+    fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?) : Call<ArrayList<JSONPost>>
 
     @GET("posts")
-    suspend fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("categories") categories: Int?) : ArrayList<JSONPost>
+    fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("categories") categories: Int?) : Call<ArrayList<JSONPost>>
 
     @GET("posts")
-    suspend fun getPostsByTags(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("tags") tags: Int?) : ArrayList<JSONPost>
+    fun getPostsByTags(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("tags") tags: Int?) : Call<ArrayList<JSONPost>>
 
     @GET("posts")
-    suspend fun getPostsByAuthor(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("author") author: Int?) : ArrayList<JSONPost>
+    fun getPostsByAuthor(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("author") author: Int?) : Call<ArrayList<JSONPost>>
+
+    //Search
+    @GET("posts")
+    fun searchForPost(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("search") search: String?) : Call<ArrayList<JSONPost>>
 
 
     //Get THING from SLUG
@@ -49,7 +53,5 @@ interface HTTPInterface {
     @GET("media/{id}")
     suspend fun getPostImgCover(@Path("id") id: Int?) : JSONMedia
 
-    @GET("posts")
-    suspend fun searchForPost(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("search") search: String?) : ArrayList<JSONPost>
 
 }
