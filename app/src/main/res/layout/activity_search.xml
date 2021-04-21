@@ -39,6 +39,7 @@
                     android:textColorHint="@color/white_empty"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
+                    android:imeOptions="actionSearch"
                     android:inputType="textPersonName|textCapSentences"
                     android:hint="@string/menu_search"
                     android:ems="10"
