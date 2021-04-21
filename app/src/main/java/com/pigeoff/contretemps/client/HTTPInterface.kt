@@ -16,6 +16,9 @@ interface HTTPInterface {
     suspend fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?) : ArrayList<JSONPost>
 
     @GET("posts")
+    suspend fun getPostsByCategoryWithFields(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("_fields") fields: String?) : ArrayList<JSONPost>
+
+    @GET("posts")
     suspend fun getPostsByCategory(@Query("per_pages") maxPages: Int?, @Query("page") page: Int?, @Query("categories") categories: Int?) : ArrayList<JSONPost>
 
     @GET("posts")

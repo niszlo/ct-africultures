@@ -23,6 +23,10 @@ class HTTPClient {
         service = retrofit.create(HTTPInterface::class.java)
     }
 
+    suspend fun getLastNewPost() : ArrayList<JSONPost> {
+        return service.getPostsByCategoryWithFields(1, 1, "id,date,title,excerpt,featured_media")
+    }
+
     suspend fun posts(page: Int, type: Int, id: Int) : ArrayList<JSONPost> {
         var posts = arrayListOf<JSONPost>()
         when (type) {

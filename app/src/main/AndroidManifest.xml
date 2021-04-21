@@ -3,6 +3,8 @@
           package="com.pigeoff.contretemps">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <application
             android:name=".CTApp"
@@ -13,6 +15,14 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+
+        <receiver android:name=".services.NewNotificationBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+
         <activity
                 android:name=".activities.SettingsActivity"
                 android:label="@string/activity_settings"
@@ -64,6 +74,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service android:name=".services.NewNotificationService" />
     </application>
 
 </manifest>
