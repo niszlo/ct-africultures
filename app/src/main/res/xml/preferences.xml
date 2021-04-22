@@ -9,7 +9,7 @@
                 app:summary="@string/settings_ctwebsite_description">
             <intent
                     android:action="android.intent.action.VIEW"
-                    android:data="http://www.contretemps.eu" />
+                    android:data="http://africultures.com" />
         </Preference>
         <Preference
                 app:title="@string/settings_developer_title"

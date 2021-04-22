@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.pigeoff.contretemps">
+          package="com.pigeoff.africultures">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:name=".CTApp"
+            android:name=".AfriApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher_square"
             android:label="@string/app_name"
@@ -32,7 +32,7 @@
                 android:theme="@style/Theme.Invisible">
             <intent-filter>
                 <data
-                        android:host="www.contretemps.eu"
+                        android:host="africultures.com"
                         android:scheme="http"/>
 
                 <action android:name="android.intent.action.VIEW"/>
@@ -42,7 +42,7 @@
             </intent-filter>
             <intent-filter>
                 <data
-                        android:host="www.contretemps.eu"
+                        android:host="africultures.com"
                         android:scheme="https"/>
 
                 <action android:name="android.intent.action.VIEW"/>
