@@ -39,15 +39,16 @@ class SearchActivity : AppCompatActivity() {
         }
 
         btnClear.setOnClickListener {
-            editSearch.requestFocus()
             editSearch.setText("")
+			editSearch.requestFocus()			
+			showKeyboard(editSearch, true)
         }
 
         showKeyboard(editSearch, true)
 
         //Handle EditText
         editSearch.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val txt = editSearch.text.toString()
                 progressBar.visibility = View.VISIBLE
                 showKeyboard(editSearch, false)
